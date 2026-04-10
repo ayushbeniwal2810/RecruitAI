@@ -1,0 +1,44 @@
+Name: Priya Sharma
+Email: priya.sharma@gmail.com
+Phone: +91 9876543210
+Location: Delhi, India
+
+EDUCATION
+B.Tech Computer Science Engineering
+SRMIST Ghaziabad | 2021 - 2025
+CGPA: 8.4
+
+SKILLS
+Programming Languages: Python, JavaScript, Java
+AI/ML: Machine Learning, Deep Learning, TensorFlow, scikit-learn, NLTK
+Data: SQL, Pandas, NumPy, Matplotlib
+Web: Flask, React, HTML, CSS
+Tools: Git, GitHub, VS Code, Jupyter Notebook, Google Colab
+Database: MySQL, MongoDB
+
+EXPERIENCE
+Machine Learning Intern | TechCorp India | June 2024 - August 2024
+- Built a sentiment analysis model using Python and NLTK with 87% accuracy
+- Worked with large datasets using Pandas and NumPy
+- Deployed ML model using Flask REST API
+- Collaborated with data engineering team on ETL pipelines
+
+PROJECTS
+1. Smart Resume Screening System
+   - Built an AI-powered resume screening system using TF-IDF and Cosine Similarity
+   - Tech Stack: Python, Flask, React, MySQL, scikit-learn
+
+2. Image Classifier
+   - Built a CNN-based image classifier using TensorFlow and Keras
+   - Achieved 92% accuracy on test dataset
+
+3. Student Result Management System
+   - Full stack web app using React frontend and Flask backend
+   - Database: MySQL
+
+CERTIFICATIONS
+- Google Machine Learning Crash Course
+- Python for Data Science - Coursera
+- SQL for Beginners - Udemy
+
+EXPERIENCE: 1 year
