@@ -24,6 +24,13 @@ export default function Login() {
 
   const emailValid = useMemo(() => EMAIL_RE.test(email.trim()), [email])
 
+  function applyTheme(themeValue) {
+    const theme = (themeValue || 'light').toLowerCase() === 'dark' ? 'dark' : 'light'
+    document.documentElement.setAttribute('data-theme', theme)
+    document.body.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
@@ -47,6 +54,8 @@ export default function Login() {
         localStorage.setItem('lastEmail', res.data.user?.email || email.trim().toLowerCase())
         localStorage.setItem('lastRole', (res.data.user?.role || role).toLowerCase())
         localStorage.setItem('lastFullName', res.data.user?.full_name || '')
+
+        applyTheme(res.data.user?.theme)
 
         const loggedRole = (res.data.user?.role || '').toLowerCase()
         navigate(loggedRole === 'recruiter' ? '/recruiter/dashboard' : '/candidate/dashboard')
