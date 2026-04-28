@@ -3,6 +3,16 @@ import axios from 'axios'
 
 const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
 
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
+
+function toAssetUrl(path) {
+  if (!path) return ''
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  if (path.startsWith('/uploads/')) return `${API_BASE}${path}`
+  if (path.startsWith('uploads/')) return `${API_BASE}/${path}`
+  return `${API_BASE}/${path.replace(/^\/+/, '')}`
+}
+
 export default function Settings() {
   const fileRef = useRef(null)
 
@@ -16,20 +26,17 @@ export default function Settings() {
 
   const token = localStorage.getItem('token')
   const user = JSON.parse(localStorage.getItem('user') || '{}')
-  const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
 
   useEffect(() => {
     setEmail(user.email || '')
-    setTheme((user.theme || localStorage.getItem('theme') || 'light').toLowerCase())
+    const initialTheme = (user.theme || localStorage.getItem('theme') || 'light').toLowerCase()
+    const safeTheme = initialTheme === 'dark' ? 'dark' : 'light'
+    setTheme(safeTheme)
+
     if (user.profile_photo) {
-      const photo = user.profile_photo.startsWith('http')
-        ? user.profile_photo
-        : `${API_BASE}${user.profile_photo.startsWith('/') ? '' : '/'}${user.profile_photo}`
-      setPhotoPreview(photo)
+      setPhotoPreview(toAssetUrl(user.profile_photo))
     }
 
-    const t = (user.theme || localStorage.getItem('theme') || 'light').toLowerCase()
-    const safeTheme = t === 'dark' ? 'dark' : 'light'
     document.documentElement.setAttribute('data-theme', safeTheme)
     document.body.setAttribute('data-theme', safeTheme)
     localStorage.setItem('theme', safeTheme)
@@ -48,10 +55,15 @@ export default function Settings() {
     }
 
     try {
-      await axios.put(`${API_BASE}/api/auth/update-email`, { email: email.trim().toLowerCase() }, { headers: authHeaders() })
-      const updated = { ...user, email: email.trim().toLowerCase() }
+      const normalizedEmail = email.trim().toLowerCase()
+      await axios.put(
+        `${API_BASE}/api/auth/update-email`,
+        { email: normalizedEmail },
+        { headers: authHeaders() }
+      )
+      const updated = { ...user, email: normalizedEmail }
       localStorage.setItem('user', JSON.stringify(updated))
-      localStorage.setItem('lastEmail', email.trim().toLowerCase())
+      localStorage.setItem('lastEmail', normalizedEmail)
       setMsg('Email updated.')
     } catch (e) {
       setErr(e?.response?.data?.message || 'Email update failed.')
@@ -64,13 +76,11 @@ export default function Settings() {
 
     const safeTheme = nextTheme === 'dark' ? 'dark' : 'light'
 
-    // Apply immediately (always)
     document.documentElement.setAttribute('data-theme', safeTheme)
     document.body.setAttribute('data-theme', safeTheme)
     localStorage.setItem('theme', safeTheme)
     setTheme(safeTheme)
 
-    // Update cached user immediately
     const raw = localStorage.getItem('user')
     try {
       const u = raw ? JSON.parse(raw) : {}
@@ -78,19 +88,15 @@ export default function Settings() {
       localStorage.setItem('user', JSON.stringify(u))
     } catch (_) {}
 
-    // Try backend sync (use an existing endpoint shape)
-    // If backend doesn't support theme yet, we keep local success and show soft notice.
     try {
       await axios.put(
-        `${API_BASE}/api/auth/update-profile`,
+        `${API_BASE}/api/auth/theme`,
         { theme: safeTheme },
         { headers: authHeaders() }
       )
       setMsg('Theme updated.')
     } catch (e) {
-      setMsg('Theme applied locally.')
-      // Optional debug:
-      // console.log(e?.response?.status, e?.response?.data)
+      setErr(e?.response?.data?.message || 'Theme sync failed. Saved locally.')
     }
   }
 
@@ -113,11 +119,7 @@ export default function Settings() {
 
       const updated = { ...user, profile_photo: path }
       localStorage.setItem('user', JSON.stringify(updated))
-
-      const photo = path.startsWith('http')
-        ? path
-        : `${API_BASE}${path.startsWith('/') ? '' : '/'}${path}`
-      setPhotoPreview(photo)
+      setPhotoPreview(toAssetUrl(path))
 
       setMsg('Profile photo updated.')
     } catch (e) {
