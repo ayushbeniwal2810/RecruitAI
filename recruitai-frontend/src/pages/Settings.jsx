@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://127.0.0.1:5000' : '')).replace(/\/$/, '')
 
 function toAssetUrl(path) {
   if (!path) return ''

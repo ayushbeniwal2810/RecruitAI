@@ -10,7 +10,7 @@ RecruitAI is a full-stack application designed to streamline the recruitment pro
 Ensure that you have the following installed on your machine:
 - Node.js (for the frontend)
 - Python (for the backend)
-- MySQL (for the database)
+- Supabase/PostgreSQL (for the database)
 
 ### Frontend Setup
 1. Clone the repository and navigate to the frontend directory:
@@ -33,17 +33,14 @@ Ensure that you have the following installed on your machine:
    ```
 2. Set up your environment variables in a `.env` file:
    ```bash
-   DB_HOST=<your_db_host>
-   DB_PORT=<your_db_port>
-   DB_USER=<your_db_user>
-   DB_PASSWORD=<your_db_password>
-   DB_NAME=<your_db_name>
+   DATABASE_URL=postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres
    JWT_SECRET_KEY=<your_jwt_secret_key>
-   ANTHROPIC_API_KEY=<your_anthropic_api_key>
+   NVIDIA_API_KEY=<your_nvidia_api_key>
+   CORS_ORIGINS=http://localhost:3000
    ```
 3. Install required Python packages:
    ```bash
-   pip install Flask Flask-CORS Flask-JWT-Extended Flask-SQLAlchemy python-dotenv pymysql
+   pip install -r requirements.txt
    ```
 4. Run the backend application:
    ```bash
@@ -56,13 +53,10 @@ Ensure that you have the following installed on your machine:
 
 ## Environment Variables
 The application requires the following environment variables:
-- `DB_HOST`
-- `DB_PORT`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_NAME`
+- `DATABASE_URL`
 - `JWT_SECRET_KEY`
-- `ANTHROPIC_API_KEY`
+- `NVIDIA_API_KEY`
+- `CORS_ORIGINS`
 
 ## Note
-Make sure to have a MySQL database set up and running before starting the application.
+Supabase (PostgreSQL) is supported through `DATABASE_URL`. The existing resume/profile files remain Render-local and should be moved to object storage for permanent file retention.

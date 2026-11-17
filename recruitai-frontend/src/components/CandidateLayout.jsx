@@ -1,7 +1,7 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://127.0.0.1:5000' : '')).replace(/\/$/, '')
 
 function toAssetUrl(path) {
   if (!path) return ''

@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: recruitai-backend
+    runtime: python
+    rootDir: recruitai-backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --factory app:create_app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        sync: false
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: NVIDIA_BASE_URL
+        value: https://integrate.api.nvidia.com/v1
+      - key: NVIDIA_MODEL
+        value: meta/llama-3.1-70b-instruct

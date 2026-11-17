@@ -1,4 +1,5 @@
 import os
+import uuid
 from flask import Blueprint, request, jsonify, current_app, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
@@ -66,7 +67,9 @@ def upload_resume():
         return jsonify({'message': 'Job not found.'}), 404
 
     # Save file
-    filename = secure_filename(file.filename)
+    original_name = secure_filename(file.filename)
+    name_root, extension = os.path.splitext(original_name)
+    filename = f"{candidate.candidate_id}_{uuid.uuid4().hex[:12]}_{name_root}{extension.lower()}"
     upload_folder = current_app.config['UPLOAD_FOLDER']
     os.makedirs(upload_folder, exist_ok=True)
     file_path = os.path.join(upload_folder, filename)
