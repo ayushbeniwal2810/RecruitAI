@@ -1,7 +1,7 @@
 # RecruitAI
 
-## Project Link
-recruit-ai-blush.vercel.app
+## [Project Link](recruit-ai-blush.vercel.app)
+click on the link above or copy the website: recruit-ai-blush.vercel.app
 
 ## Project Overview
 RecruitAI is a full-stack application designed to streamline the recruitment process. This project encompasses both frontend and backend components, offering a seamless user experience for job seekers and recruiters alike.
