@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from urllib.parse import quote_plus
+from urllib.parse import quote, quote_plus, unquote
 
 load_dotenv()
 
@@ -10,6 +10,17 @@ class Config:
     if DATABASE_URL:
         if DATABASE_URL.startswith('postgres://'):
             DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
+        # Supabase passwords may contain reserved URL characters. Re-encode
+        # the password while keeping the host and query separate.
+        if '://' in DATABASE_URL:
+            scheme, remainder = DATABASE_URL.split('://', 1)
+            if '@' in remainder:
+                userinfo, hostinfo = remainder.rsplit('@', 1)
+                if ':' in userinfo:
+                    username, password = userinfo.split(':', 1)
+                    password = unquote(password)
+                    userinfo = f"{username}:{quote(password, safe='')}"
+                    DATABASE_URL = f"{scheme}://{userinfo}@{hostinfo}"
         SQLALCHEMY_DATABASE_URI = DATABASE_URL
     else:
         DB_HOST = os.getenv('DB_HOST', 'localhost')
