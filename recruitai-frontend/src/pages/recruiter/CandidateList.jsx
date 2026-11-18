@@ -176,7 +176,7 @@ export default function CandidateList() {
                   {expanded === c.candidate_id && (
                     <tr key={`exp-${c.candidate_id}`}>
                       <td colSpan={7} style={{ background: 'var(--off-white)', padding: '16px 20px' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+                        <div className="candidate-details-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
                           <div>
                             <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
                               Matched Skills

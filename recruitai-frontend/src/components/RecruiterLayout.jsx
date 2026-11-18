@@ -14,7 +14,9 @@ function toAssetUrl(path) {
 export default function RecruiterLayout() {
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const menuRef = useRef(null)
+  const mobileMenuRef = useRef(null)
 
   const user = (() => {
     try {
@@ -54,6 +56,7 @@ export default function RecruiterLayout() {
   useEffect(() => {
     function onDocClick(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false)
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) setMobileMenuOpen(false)
     }
     document.addEventListener('mousedown', onDocClick)
     return () => document.removeEventListener('mousedown', onDocClick)
@@ -83,8 +86,9 @@ export default function RecruiterLayout() {
   const initial = (fullName?.[0] || 'R').toUpperCase()
 
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '250px 1fr', background: 'var(--bg)', color: 'var(--text)' }}>
+    <div className="app-layout" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '250px 1fr', background: 'var(--bg)', color: 'var(--text)' }}>
       <aside
+        className="mobile-sidebar"
         style={{
           background: '#0f172a',
           color: '#e2e8f0',
@@ -96,7 +100,7 @@ export default function RecruiterLayout() {
           Recruit<span style={{ color: '#a78bfa' }}>AI</span>
         </div>
 
-        <nav>
+        <nav className="mobile-nav">
           <NavLink to="/recruiter/dashboard" style={({ isActive }) => ({ ...linkBase, background: isActive ? '#1e293b' : 'transparent', color: isActive ? '#fff' : '#cbd5e1' })}>Dashboard</NavLink>
           <NavLink to="/recruiter/post-job" style={({ isActive }) => ({ ...linkBase, background: isActive ? '#1e293b' : 'transparent', color: isActive ? '#fff' : '#cbd5e1' })}>Post Job</NavLink>
           <NavLink to="/recruiter/my-jobs" style={({ isActive }) => ({ ...linkBase, background: isActive ? '#1e293b' : 'transparent', color: isActive ? '#fff' : '#cbd5e1' })}>My Jobs</NavLink>
@@ -121,7 +125,59 @@ export default function RecruiterLayout() {
             zIndex: 10,
           }}
         >
-          <div style={{ fontWeight: 700, color: 'var(--text)' }}>Recruiter Dashboard</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div className="mobile-menu-wrapper" ref={mobileMenuRef} style={{ position: 'relative' }}>
+              <button
+                type="button"
+                className="mobile-menu-button"
+                onClick={() => setMobileMenuOpen((value) => !value)}
+                aria-label="Open navigation menu"
+                aria-expanded={mobileMenuOpen}
+                style={{
+                  width: 40,
+                  height: 40,
+                  border: 'none',
+                  borderRadius: 0,
+                  background: 'transparent',
+                  color: 'var(--text)',
+                  cursor: 'pointer',
+                  display: 'grid',
+                  placeItems: 'center',
+                  padding: 8,
+                }}
+              >
+                <span className="hamburger-icon" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+              </button>
+              {mobileMenuOpen && (
+                <nav
+                  className="mobile-menu-dropdown"
+                  style={{
+                    position: 'absolute',
+                    top: 44,
+                    left: 0,
+                    width: 220,
+                    padding: 8,
+                    borderRadius: 12,
+                    border: '1px solid var(--border)',
+                    background: 'var(--card)',
+                    boxShadow: '0 12px 30px rgba(15,23,42,0.16)',
+                    zIndex: 100,
+                  }}
+                >
+                  <NavLink onClick={() => setMobileMenuOpen(false)} to="/recruiter/dashboard" style={linkBase}>Dashboard</NavLink>
+                  <NavLink onClick={() => setMobileMenuOpen(false)} to="/recruiter/post-job" style={linkBase}>Post Job</NavLink>
+                  <NavLink onClick={() => setMobileMenuOpen(false)} to="/recruiter/my-jobs" style={linkBase}>My Jobs</NavLink>
+                  <NavLink onClick={() => setMobileMenuOpen(false)} to="/recruiter/candidates" style={linkBase}>Candidates</NavLink>
+                  <NavLink onClick={() => setMobileMenuOpen(false)} to="/recruiter/settings" style={linkBase}>Settings</NavLink>
+                </nav>
+              )}
+            </div>
+            <div style={{ fontWeight: 700, color: 'var(--text)' }}>Recruiter Dashboard</div>
+          </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ fontSize: 13, color: 'var(--muted)' }}>Welcome, {fullName}</div>

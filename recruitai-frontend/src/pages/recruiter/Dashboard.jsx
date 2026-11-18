@@ -102,7 +102,7 @@ export default function RecruiterDashboard() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 20 }}>
+      <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 20 }}>
 
         {/* Candidates Table */}
         <div className="card" style={{ marginBottom: 0 }}>

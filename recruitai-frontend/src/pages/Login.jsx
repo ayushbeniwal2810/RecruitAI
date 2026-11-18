@@ -93,6 +93,7 @@ export default function Login() {
 
   return (
     <div
+      className="login-page"
       style={{
         minHeight: '100vh',
         display: 'grid',
@@ -100,22 +101,23 @@ export default function Login() {
         background: 'radial-gradient(circle at 10% 20%, #f0f9ff 0%, #eef2ff 45%, #f5f3ff 100%)',
       }}
     >
-      <div style={{ padding: '72px 64px', color: '#1f2937' }}>
-        <div style={{ fontSize: 34, fontWeight: 800, marginBottom: 10 }}>
+      <div className="login-left" style={{ padding: '72px 64px', color: '#f8fafc' }}>
+        <div style={{ fontSize: 34, fontWeight: 800, marginBottom: 10, color: '#ffffff', textShadow: '0 2px 18px rgba(15,23,42,0.18)' }}>
           Recruit<span style={{ color: '#6d28d9' }}>AI</span>
         </div>
-        <h1 style={{ margin: 0, fontSize: 44, lineHeight: 1.15 }}>
+        <h1 style={{ margin: 0, fontSize: 44, lineHeight: 1.15, color: '#ffffff', textShadow: '0 3px 24px rgba(15,23,42,0.24)' }}>
           Smart hiring,
           <br />
           simpler workflow.
         </h1>
-        <p style={{ marginTop: 18, maxWidth: 520, color: '#475569', fontSize: 16 }}>
+        <p style={{ marginTop: 18, maxWidth: 520, color: '#e2e8f0', fontSize: 16, textShadow: '0 2px 16px rgba(15,23,42,0.22)' }}>
           AI-powered screening for recruiters and candidates in one elegant platform.
         </p>
       </div>
 
       <div style={{ display: 'grid', placeItems: 'center', padding: 24 }}>
         <div
+          className="role-selector"
           style={{
             width: '100%',
             maxWidth: 460,
